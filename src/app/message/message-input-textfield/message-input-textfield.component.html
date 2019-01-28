@@ -1,0 +1,30 @@
+
+<div class="card">
+  <h5 class="card-header">Text:</h5>
+  <div class="card-body">
+    <div class="m-2">
+      <form [formGroup]="messageForm" (ngSubmit)="save()">
+
+        <div class="row">
+          <label>Message: </label>
+          <input type="text" class="form-control" formControlName="message" (input)="updateMorseMessage()">
+        </div>
+
+        <div>
+          Morse code:
+          <div *ngIf="morseMessage">
+            <h2 style="color: darkblue"> {{morseMessage}} </h2>
+          </div>
+          <div *ngIf="!morseMessage">
+            <h4 style="color: darkred">No message yet!</h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <button [disabled]="messageForm.invalid" type="submit" class="btn btn-success"><h4>Send Message</h4></button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

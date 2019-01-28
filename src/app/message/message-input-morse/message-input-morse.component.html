@@ -1,0 +1,29 @@
+
+<div class="card">
+  <h5 class="card-header">Morse:</h5>
+  <div class="card-body">
+    <h5 *ngIf="message" class="card-title">{{message}}</h5>
+    <h5 *ngIf="!message" class="card-title">No message.</h5>
+
+    <div>
+      <button type="button" class="btn btn-primary mr-1" #pop1="bs-tooltip" tooltip="Click the button in less then a 120 ms for . and longer for -" (click)="pop1.hide()" (mouseleave)="pop1.hide()" placement="auto" (mousedown)="morse(true)" (mouseup)="morse(false)">Morse</button>
+      <button type="button" class="btn btn-secondary mr-1" #pop2="bs-tooltip" tooltip="Go to next letter" (click)="pop2.hide()" (mouseleave)="pop2.hide()" triggers="mouseenter:click" (click)="next();">Next</button>
+      <button type="button" class="btn btn-secondary mr-1" #pop3="bs-tooltip" tooltip="Go to next word" (click)="pop3.hide()" (mouseleave)="pop3.hide()" triggers="mouseenter:click" (click)="space();">Space</button>
+      <button type="button" class="btn btn-secondary mr-1" #pop4="bs-tooltip" tooltip="Remove all" (click)="pop4.hide()" (mouseleave)="pop4.hide()" triggers="mouseenter:click" (click)="clear();">Clear</button>
+    </div>
+
+    <div>
+      Human readable message to send:
+      <div *ngIf="humanReadableMessage">
+        <h2 style="color: darkblue"> {{humanReadableMessage}} </h2>
+      </div>
+      <div *ngIf="!humanReadableMessage">
+        <h4 style="color: darkred">No message yet!</h4>
+      </div>
+    </div>
+
+    <div>
+      <button [disabled]="!message" class="btn btn-success" #pop5="bs-tooltip" tooltip="Broadcast Message" (click)="pop5.hide()" (mouseleave)="pop5.hide()" triggers="mouseenter:click" (click)="send()"><h4>Send Message</h4></button>
+    </div>
+  </div>
+</div>
