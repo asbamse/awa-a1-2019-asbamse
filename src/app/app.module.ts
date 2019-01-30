@@ -12,13 +12,18 @@ import { MessageListComponent } from './message/message-list/message-list.compon
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MessageInputMorseComponent } from './message/message-input-morse/message-input-morse.component';
 import { MessageInputTextfieldComponent } from './message/message-input-textfield/message-input-textfield.component';
+import { AppRoutingModule } from './app-routing.module';
+import { MessageViewComponent } from './message/message-view/message-view.component';
+import { PaginationComponent } from './shared/pagination/pagination.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MessageListComponent,
     MessageInputMorseComponent,
-    MessageInputTextfieldComponent
+    MessageInputTextfieldComponent,
+    MessageViewComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +32,8 @@ import { MessageInputTextfieldComponent } from './message/message-input-textfiel
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     MomentModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    AppRoutingModule
   ],
   providers: [
     MessageService

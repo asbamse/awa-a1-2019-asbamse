@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MessageService} from '../shared/message.service';
-import {timestamp} from 'rxjs/operators';
 
 @Component({
   selector: 'app-message-list',
@@ -11,17 +10,23 @@ export class MessageListComponent implements OnInit {
   @Input() messages: any[];
   @Input() latest: any;
 
-  constructor(private messageService: MessageService) { }
+  take = 4;
+  showPageAmount = 5;
+
+  constructor(private messageService: MessageService) {
+  }
 
   ngOnInit() {
   }
 
+  // Convert message from morse to readable text.
   convertMessage(message: string): string {
     return this.messageService.convertToText(message);
   }
 
+  // Convert the seconds in a TimeStamp to a date.
   convertSecondsToDate(timeStamp: any) {
-    let date = new Date(timeStamp.seconds * 1000);
+    const date = new Date(timeStamp.seconds * 1000);
     return date;
   }
 }

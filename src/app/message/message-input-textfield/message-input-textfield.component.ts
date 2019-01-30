@@ -26,7 +26,7 @@ export class MessageInputTextfieldComponent implements OnInit {
     const message = this.messageForm.value;
     const time = new Date();
 
-    this.messageService.addMessage(time, this.convertToMorse(message.message).trim() ).then(done => {
+    this.messageService.addMessage(time, this.messageService.convertToMorse(message.message).trim() ).then(done => {
       console.log('saved');
     }, err => {
       console.log(err);
@@ -35,52 +35,11 @@ export class MessageInputTextfieldComponent implements OnInit {
     this.messageForm.reset();
   }
 
-  convertToMorse(text: string): string {
-    let morse = '';
-    const morseAlphabet = this.reversedMorseAlphabetMap();
-    const chars = text.toString().toUpperCase().split('');
-
-    let wasSpace = true;
-    for (const char of chars) {
-      const letter = morseAlphabet[char];
-      if (letter !== undefined) {
-        if (letter === '/') {
-          morse += letter;
-          wasSpace = true;
-        } else {
-          if (wasSpace) {
-            morse += letter;
-            wasSpace = false;
-          } else {
-            morse += ' ';
-            morse += letter;
-          }
-        }
-      } else {
-        morse += char;
-      }
-    }
-
-    return morse;
-  }
-
-  reversedMorseAlphabetMap() {
-    const morseAlphabet = this.messageService.getReverseMorseAlphabet();
-    const reversedMap = {};
-
-    var num = Object.keys(morseAlphabet);
-    num.forEach(function (key) {
-      reversedMap[morseAlphabet[key]] = key;
-    });
-
-    return reversedMap;
-  }
-
   updateMorseMessage() {
     if (this.messageForm.invalid || this.messageForm.value.message === undefined) {
       this.morseMessage = undefined;
     } else {
-      this.morseMessage = this.convertToMorse(this.messageForm.value.message);
+      this.morseMessage = this.messageService.convertToMorse(this.messageForm.value.message);
     }
   }
 }

@@ -9,7 +9,7 @@ export class MessageService {
   constructor(private db: AngularFirestore) { }
 
   getMessages(): Observable<any> {
-    return this.db.collection('messages', ref => ref.orderBy('time')).valueChanges();
+    return this.db.collection('messages', ref => ref.orderBy('time', 'desc')).valueChanges();
   }
 
   getMessagesLastByLimit(limit: number): Observable<any> {
@@ -17,7 +17,7 @@ export class MessageService {
   }
 
   getMessagesPaged(limit: number, startAt?: any): Observable<any> {
-    return this.db.collection('messages', ref => ref.orderBy('time').limit(limit).startAfter(startAt.time)).valueChanges();
+    return this.db.collection('messages', ref => ref.orderBy('time', 'desc').limit(limit).startAfter(startAt.time)).valueChanges();
   }
 
   addMessage(time: Date, message: any): Promise<any> {
@@ -45,6 +45,18 @@ export class MessageService {
     };
   }
 
+  getMorseAlphabet() {
+    const morseAlphabet = this.getReverseMorseAlphabet();
+    const reversedMap = {};
+
+    const num = Object.keys(morseAlphabet);
+    num.forEach(function (key) {
+      reversedMap[morseAlphabet[key]] = key;
+    });
+
+    return reversedMap;
+  }
+
   convertToText(morse: string): string {
     let text = '';
     const words = morse.toString().split('/');
@@ -62,6 +74,35 @@ export class MessageService {
     }
 
     return text;
+  }
+
+  convertToMorse(text: string): string {
+    let morse = '';
+    const morseAlphabet = this.getMorseAlphabet();
+    const chars = text.toString().toUpperCase().split('');
+
+    let wasSpace = true;
+    for (const char of chars) {
+      const letter = morseAlphabet[char];
+      if (letter !== undefined) {
+        if (letter === '/') {
+          morse += letter;
+          wasSpace = true;
+        } else {
+          if (wasSpace) {
+            morse += letter;
+            wasSpace = false;
+          } else {
+            morse += ' ';
+            morse += letter;
+          }
+        }
+      } else {
+        morse += char;
+      }
+    }
+
+    return morse;
   }
 
   messageOk(morse: string): boolean {

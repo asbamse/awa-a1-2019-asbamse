@@ -1,37 +1,8 @@
 <head>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 </head>
 
 <div class="m-4">
-  <!--The content below is only a placeholder and can be replaced.-->
-  <div *ngIf="!messages">Loading...</div>
-  <div *ngIf="messages">
-    <div style="text-align:center">
-      <h1>
-        Welcome to {{ title }}!
-      </h1>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-12 col-md-6 mb-2 mb-md-0">
-          <app-message-list [messages]="messages" [latest]="latest"></app-message-list>
-        </div>
-        <div class="col-12 col-md-6 mb-2 mb-md-0 d-flex align-items-center">
-          <img class="mx-auto d-block w-100" style="max-width: 415px;" src="http://www.codebug.org.uk/assets/steps/540/image_1.png">
-        </div>
-      </div>
-
-      <hr>
-
-      <div class="row">
-        <div class="col-12 col-md-6 mb-2 mb-2 mb-md-0">
-          <app-message-input-morse></app-message-input-morse>
-        </div>
-        <div class="col-12 col-md-6 mb-2 mb-md-0">
-          <app-message-input-textfield></app-message-input-textfield>
-        </div>
-      </div>
-    </div>
-
-  </div>
+  <router-outlet></router-outlet>
 </div>
