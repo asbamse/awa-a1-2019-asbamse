@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {MessageService} from '../shared/message.service';
-import {forEach} from '@angular/router/src/utils/collection';
+import {AddMessageService} from '../../shared/message-service/services/add-message.service';
+import {ValidateMessageService} from '../../shared/message-service/services/validate-message.service';
+import {Message} from '../../shared/message-service/models/message';
 
 @Component({
   selector: 'app-message-input-textfield',
@@ -17,7 +18,8 @@ export class MessageInputTextfieldComponent implements OnInit {
   });
   morseMessage: string;
 
-  constructor(private messageService: MessageService) { }
+  constructor(private messageAddService: AddMessageService,
+              private messageValidateService: ValidateMessageService) { }
 
   ngOnInit() {
   }
@@ -26,8 +28,10 @@ export class MessageInputTextfieldComponent implements OnInit {
     const message = this.messageForm.value;
     const time = new Date();
 
-    this.messageService.addMessage(time, this.messageService.convertToMorse(message.message).trim() ).then(done => {
-      console.log('saved');
+    const newMessage: Message = { id: '', message: this.messageValidateService.convertToMorse(message.message).trim(), time: time }
+
+    this.messageAddService.addMessage(newMessage).then(done => {
+      console.log('saved - ' + done.id + ', ' + done.message + ', ' + done.time);
     }, err => {
       console.log(err);
     });
@@ -39,7 +43,7 @@ export class MessageInputTextfieldComponent implements OnInit {
     if (this.messageForm.invalid || this.messageForm.value.message === undefined) {
       this.morseMessage = undefined;
     } else {
-      this.morseMessage = this.messageService.convertToMorse(this.messageForm.value.message);
+      this.morseMessage = this.messageValidateService.convertToMorse(this.messageForm.value.message);
     }
   }
 }

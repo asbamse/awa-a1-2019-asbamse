@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {MessageService} from '../shared/message.service';
+import {GetMessageService} from '../../shared/message-service/services/get-message.service';
+import {Message} from '../../shared/message-service/models/message';
 
 @Component({
   selector: 'app-message-view',
@@ -8,11 +9,11 @@ import {MessageService} from '../shared/message.service';
 })
 export class MessageViewComponent implements OnInit {
   title = 'Morse App';
-  messages: any[];
-  latest: any;
+  messages: Message[];
+  latest: Message;
 
-  constructor(private messageService: MessageService) {
-    this.messageService.getMessages().subscribe(messages => {
+  constructor(private messageGetService: GetMessageService) {
+    this.messageGetService.getMessages().subscribe(messages => {
       this.messages = messages;
       this.latest = messages[0];
     });

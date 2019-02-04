@@ -1,36 +1,32 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {Observable} from 'rxjs/internal/Observable';
 
-@Injectable()
-export class MessageService {
-  reverseMorseAlphabet = this.getReverseMorseAlphabet();
+@Injectable({
+  providedIn: 'root'
+})
+export class ValidateMessageService {
 
-  constructor(private db: AngularFirestore) { }
+  constructor() { }
 
-  getMessages(): Observable<any> {
-    return this.db.collection('messages', ref => ref.orderBy('time', 'desc')).valueChanges();
-  }
-
-  getMessagesLastByLimit(limit: number): Observable<any> {
-    return this.db.collection('messages', ref => ref.orderBy('time', 'desc').limit(limit)).valueChanges();
-  }
-
-  getMessagesPaged(limit: number, startAt?: any): Observable<any> {
-    return this.db.collection('messages', ref => ref.orderBy('time', 'desc').limit(limit).startAfter(startAt.time)).valueChanges();
-  }
-
-  addMessage(time: Date, message: any): Promise<any> {
-    if (time && this.messageOk(message)) {
-      const messageCollection = this.db.collection<any>('messages');
-      return messageCollection.add({time: time, message: message});
-    } else {
-      return new Promise((resolve, reject) => {
-        reject('Value is not a valid morse code');
-      });
+  messageOk(morse: string): boolean {
+    const words = morse.toString().split('/');
+    for (const word of words) {
+      if (word.trim().length === 0) {
+        continue;
+      }
+      const chars = word.split(' ');
+      for (const char of chars) {
+        if (char.trim().length === 0) {
+          continue;
+        }
+        const letter = this.getReverseMorseAlphabet()[char.toUpperCase()];
+        if (letter === undefined) {
+          console.log(char);
+          return false;
+        }
+      }
     }
+    return true;
   }
-
 
   getReverseMorseAlphabet() {
     return {
@@ -63,7 +59,7 @@ export class MessageService {
     for (const word of words) {
       const chars = word.split(' ');
       for (const char of chars) {
-        const letter = this.reverseMorseAlphabet[char.toUpperCase()];
+        const letter = this.getReverseMorseAlphabet()[char.toUpperCase()];
         if (letter !== undefined) {
           text += letter;
         } else {
@@ -104,26 +100,4 @@ export class MessageService {
 
     return morse;
   }
-
-  messageOk(morse: string): boolean {
-    const words = morse.toString().split('/');
-    for (const word of words) {
-      if (word.trim().length === 0) {
-        continue;
-      }
-      const chars = word.split(' ');
-      for (const char of chars) {
-        if (char.trim().length === 0) {
-          continue;
-        }
-        const letter = this.reverseMorseAlphabet[char.toUpperCase()];
-        if (letter === undefined) {
-          console.log(char);
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
 }
