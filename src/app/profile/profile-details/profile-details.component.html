@@ -1,0 +1,14 @@
+<app-loading-overlay *ngIf="!profile"></app-loading-overlay>
+<div *ngIf="profile" style="max-width: 24em;">
+  <div class="card">
+    <img *ngIf="profile.pictureUrl" class="card-img-top" src="{{profile.pictureUrl}}" alt="Card image cap">
+    <img *ngIf="!profile.pictureUrl" class="card-img-top" src="assets/images/avatar.png" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{profile.username}}</h5>
+      <p class="card-text">{{profile.description}}</p>
+    </div>
+  </div>
+  <div *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/internal/Observable';
+import {Observable} from 'rxjs/';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Message} from '../models/message';
 import { map } from 'rxjs/operators';

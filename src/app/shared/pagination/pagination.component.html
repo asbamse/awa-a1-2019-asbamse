@@ -1,4 +1,4 @@
-<nav *ngIf="showPages.length > 1">
+<nav *ngIf="showPages.length > 0">
   <ul class="unselectable pagination justify-content-center">
     <li class="page-item" [class.disabled]="page <= 1"><a class="page-link" (click)="updateURLParameter(previousPage)">&laquo;</a></li>
     <li *ngFor="let pageNumber of showPages" class="page-item" [class.active]="page == pageNumber">

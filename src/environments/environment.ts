@@ -5,7 +5,7 @@ export const environment = {
     authDomain: 'fir-morse-project.firebaseapp.com',
     databaseURL: 'https://fir-morse-project.firebaseio.com',
     projectId: 'fir-morse-project',
-    storageBucket: '',
+    storageBucket: 'fir-morse-project.appspot.com',
     messagingSenderId: '960294002905'
   }
 };

@@ -13,7 +13,7 @@ export class MessageListComponent implements OnInit {
   @Input() latest: Message;
 
   take = 4;
-  showPageAmount = 5;
+  showPageAmount = 7;
 
   constructor(private messageValidateService: ValidateMessageService,
               private messageDeleteService: DeleteMessageService) {
@@ -34,11 +34,11 @@ export class MessageListComponent implements OnInit {
   }
 
   deleteMessage(id: string) {
-    console.log(id);
-    this.messageDeleteService.deleteMessageById(id).then(result => {
-      alert(result);
-    }).catch(err => {
-      alert(err);
-    });
+    this.messageDeleteService
+      .deleteMessageById(id)
+      .subscribe(
+        next => { alert('Successfully deleted: "' + next.message + '"'); },
+        error => { alert(error); }
+      );
   }
 }

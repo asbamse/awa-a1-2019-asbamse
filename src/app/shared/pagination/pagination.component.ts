@@ -74,32 +74,38 @@ export class PaginationComponent implements OnInit {
 
         // Calculate previous page, if before page 1 it is set to 1.
         this.previousPage = this.page <= 1 ? 1 : (this.page * 1 - 1);
-        // Calculate last page, if after last page it is set to the last page
+        // Calculate next page, if after last page it is set to the last page
         this.nextPage = this.page >= this.lastPage ? this.lastPage : (this.page * 1 + 1);
 
-        // Calculate the last page which the pagination element should show.
+        // Calculate the amount of pages which the pagination element should show.
         const endShowPage = this.lastPage < this.showPageAmount ? this.lastPage : this.showPageAmount;
+        this.showPageAmount = this.lastPage < this.showPageAmount ? this.lastPage : this.showPageAmount;
+        // Calculate the start border.
+        // If the page is less than this value, the normal amount of shown pages before should be less or none.
+        const centerStartBorder = Math.floor(this.showPageAmount * 1.0 / 2.0);
+        // Calculate the end border.
+        // If the page is larger than this value, the normal amount of shown pages after should be less or none.
+        let centerEndBorder = centerStartBorder + 2;
+        // The end border will be before the end page if the lastpage is before the center.
+        // In this case the end border should be the end page.
+        centerEndBorder = centerEndBorder < endShowPage ? endShowPage : centerEndBorder;
+        // Generate the page from the sum of the current page and iteration minus the distance to center.
+        let showPage = (this.page * 1) - centerStartBorder;
+        // In case the page is before the start border the positions are shifted right the distance.
+        showPage = this.page <= centerStartBorder
+          ? showPage + ((centerStartBorder + 1) - this.page * 1)
+          : showPage;
+        // In case the page is after the end border the positions are shifted left the distance from center.
+        showPage = this.page > centerEndBorder - (this.showPageAmount % 2 === 1 ? 1 : 0) && endShowPage > 2
+          ? showPage - (endShowPage - centerEndBorder)
+          : showPage;
+        showPage = this.page > this.lastPage * 1 - (centerStartBorder - (this.showPageAmount % 2 === 0 ? 1 : 0)) && endShowPage > 2
+          ? showPage - (centerStartBorder - (this.showPageAmount % 2 === 0 ? 1 : 0) - (this.lastPage * 1 - this.page * 1))
+          : showPage;
+        // The page is added to the pagination element.
         // For loop to generate the pages shown.
         for (let i = 0; i < endShowPage; i++) {
-          // Calculate the start border.
-          // If the page is less than this value, the normal amount of shown pages before should be less or none.
-          const centerStartBorder = Math.ceil(this.showPageAmount * 1.0 / 2.0);
-          // Calculate distance to center.
-          const centerDistance = Math.floor(this.showPageAmount * 1.0 / 2.0);
-          // Calculate the end border.
-          // If the page is larger than this value, the normal amount of shown pages after should be less or none.
-          let centerEndBorder = this.lastPage * 1 - centerDistance;
-          // The end border will be before the end page if the lastpage is before the center.
-          // In this case the end border should be the end page.
-          centerEndBorder = centerEndBorder < endShowPage ? endShowPage : centerEndBorder;
-          // Generate the page from the sum of the current page and iteration minus the distance to center.
-          let showPage = (this.page * 1 + i) - centerDistance;
-          // In case the page is before the start border the positions are shifted right the distance.
-          showPage = this.page < centerStartBorder ? showPage + (centerStartBorder * 1 - this.page * 1) : showPage;
-          // In case the page is after the end border the positions are shifted left the distance.
-          showPage = this.page > centerEndBorder ? showPage - (this.page * 1 - centerEndBorder * 1) : showPage;
-          // The page is added to the pagination element.
-          this.showPages[i] = showPage;
+          this.showPages[i] = showPage + i;
         }
       } else {
         // If page is not set in URL the page is set to 1.

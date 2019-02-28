@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {ValidateMessageService} from './validate-message.service';
 import {Message} from '../models/message';
+import {from, Observable} from 'rxjs/';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,27 +12,21 @@ export class AddMessageService {
 
   constructor(private db: AngularFirestore, private validationService: ValidateMessageService) { }
 
-  addMessage(message: Message): Promise<Message> {
+  addMessage(message: Message): Observable<Message> {
     if (message.time && this.validationService.messageOk(message.message)) {
-      const messageCollection = this.db.collection<any>('messages');
       const stripId = message;
       delete stripId.id;
 
-      return new Promise<Message>((resolve, reject) => {
-        messageCollection.add(stripId).then(result => {
-          result.get().then(r2 => {
-            return resolve({ Id: result.id, ...r2.data() });
-          }).catch(err => {
-            reject(err);
-          });
-        }).catch(err => {
-          reject(err);
-        });
-      });
+      return from(
+        this.db.collection('messages').add(stripId)
+      ).pipe(
+        map(messageRef => {
+          message.id = messageRef.id;
+          return message;
+        })
+      );
     } else {
-      return new Promise((resolve, reject) => {
-        reject('Value is not a valid morse code');
-      });
+      return Observable.create(obs => { obs.error('Value is not a valid morse code'); });
     }
   }
 }

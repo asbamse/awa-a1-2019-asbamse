@@ -1,0 +1,67 @@
+<button class="btn btn-primary" (click)="open()">Register</button>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h5 class="modal-title">Register</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="profileForm" (ngSubmit)="save()">
+
+      <div class="row">
+        <label>Profile Image: </label>
+        <div class="custom-file">
+          <input type="file" accept="image/png, image/gif, image/jpeg" class="custom-file-input form-control" id="validatedCustomFile" formControlName="pictureUrl" (change)="onFileChange($event); fileChangeEvent($event)">
+          <label *ngIf="!file" class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+          <label *ngIf="file" class="custom-file-label" for="validatedCustomFile">{{file.name}}</label>
+        </div>
+      </div>
+
+      <div [style.display]="!showCropper?'none':'grid'" class="row">
+        <image-cropper style="height: 300px;"
+                       [imageChangedEvent]="imageChangedEvent"
+                       [maintainAspectRatio]="true"
+                       [aspectRatio]="1 / 1"
+                       [resizeToWidth]="64"
+                       format="png"
+                       (imageCropped)="imageCropped($event)"
+                       (imageLoaded)="imageLoaded()"
+                       (loadImageFailed)="loadImageFailed()"
+        ></image-cropper>
+
+        <img class="mx-auto" [src]="croppedImage" />
+      </div>
+
+      <div class="row">
+        <label>Username: </label>
+        <input type="text" class="form-control" formControlName="username">
+      </div>
+
+      <div class="row">
+        <label>Password: </label>
+        <input type="password" class="form-control" formControlName="password">
+      </div>
+
+      <div class="row">
+        <label>Repeat Password: </label>
+        <input type="password" class="form-control" formControlName="repeatPassword">
+        <div *ngIf="profileForm.errors?.MissMatchPassword" style="color: red;">
+            Password does not match
+        </div>
+      </div>
+
+      <div class="row">
+        <label>Description: </label>
+        <input type="text" class="form-control" formControlName="description">
+      </div>
+    </form>
+    <app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="profileForm.invalid" type="button" class="btn btn-primary" (click)="save()">Register</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">Close</button>
+  </div>
+</ng-template>
+

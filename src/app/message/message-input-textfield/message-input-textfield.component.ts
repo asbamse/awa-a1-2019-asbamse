@@ -30,10 +30,10 @@ export class MessageInputTextfieldComponent implements OnInit {
 
     const newMessage: Message = { id: '', message: this.messageValidateService.convertToMorse(message.message).trim(), time: time }
 
-    this.messageAddService.addMessage(newMessage).then(done => {
-      console.log('saved - ' + done.id + ', ' + done.message + ', ' + done.time);
+    this.messageAddService.addMessage(newMessage).subscribe(next => {
+      alert('Saved - ' + next.id + ', ' + next.message + ', ' + next.time);
     }, err => {
-      console.log(err);
+      alert(err);
     });
 
     this.messageForm.reset();
