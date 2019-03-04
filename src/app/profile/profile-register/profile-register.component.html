@@ -24,14 +24,13 @@
                        [imageChangedEvent]="imageChangedEvent"
                        [maintainAspectRatio]="true"
                        [aspectRatio]="1 / 1"
-                       [resizeToWidth]="64"
                        format="png"
                        (imageCropped)="imageCropped($event)"
                        (imageLoaded)="imageLoaded()"
                        (loadImageFailed)="loadImageFailed()"
         ></image-cropper>
 
-        <img class="mx-auto" [src]="croppedImage" />
+        <img width="64" class="mx-auto" [src]="croppedImage" />
       </div>
 
       <div class="row">

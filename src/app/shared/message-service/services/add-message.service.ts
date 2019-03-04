@@ -4,9 +4,10 @@ import {ValidateMessageService} from './validate-message.service';
 import {Message} from '../models/message';
 import {from, Observable} from 'rxjs/';
 import {map} from 'rxjs/operators';
+import {MessageServiceModule} from '../message-service.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: MessageServiceModule
 })
 export class AddMessageService {
 

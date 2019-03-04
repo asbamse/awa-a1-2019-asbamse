@@ -3,9 +3,10 @@ import {Observable} from 'rxjs/';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Message} from '../models/message';
 import { map } from 'rxjs/operators';
+import {MessageServiceModule} from '../message-service.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: MessageServiceModule
 })
 export class GetMessageService {
 

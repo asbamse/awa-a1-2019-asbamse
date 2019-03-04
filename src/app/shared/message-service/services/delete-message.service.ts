@@ -3,9 +3,10 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Message} from '../models/message';
 import {map, switchMap} from 'rxjs/operators';
 import {from, Observable, throwError} from 'rxjs/';
+import {MessageServiceModule} from '../message-service.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: MessageServiceModule
 })
 export class DeleteMessageService {
 

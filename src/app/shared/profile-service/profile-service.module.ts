@@ -8,6 +8,7 @@ import {BsModalService, ComponentLoaderFactory, ModalBackdropComponent, ModalMod
 import {ReactiveFormsModule} from '@angular/forms';
 import {AddProfileService} from './services/add-profile.service';
 import {GetProfileService} from './services/get-profile.service';
+import {FileuploadServiceModule} from '../fileupload-service/fileupload-service.module';
 
 @NgModule({
   providers: [
@@ -23,7 +24,8 @@ import {GetProfileService} from './services/get-profile.service';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     ReactiveFormsModule,
-    ModalModule
+    ModalModule,
+    FileuploadServiceModule,
   ]
 })
 export class ProfileServiceModule { }
